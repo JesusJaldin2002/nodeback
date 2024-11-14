@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+    container_name: my_node_app
+    ports:
+      - "3000:3000" # Mapear el puerto 3000 en el contenedor al puerto 3000 en tu máquina host
+    environment:
+      - DB_USER=postgres
+      - DB_HOST=database
+      - DB_NAME=pruebanode
+      - DB_PASSWORD=1234
+      - DB_PORT=5432
+      - CHATGPT_API_KEY=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 # Reemplaza con tu clave
+    depends_on:
+      - database
+    networks:
+      - my_network
+
+  database:
+    image: postgres:13
+    container_name: my_postgres_db
+    ports:
+      - "5432:5432" # Mapear el puerto 5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: pruebanode
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+volumes:
+  postgres_data:
+
+networks:
+  my_network:
